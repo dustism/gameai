@@ -1,0 +1,29 @@
+# ---adjusting parameters
+import time
+
+HIDDENS = [64, 64, 64, 64]
+
+NORD = 1.0
+
+SKIP_FRAME = 2
+
+N_GAMES = 4
+IP = '172.16.9.136'
+PORT = [12345, 12346, 12347, 12348]
+
+LEARNING_TURNS_EACH = 100
+
+MAX_EPISODES = 2000
+
+QUANTITY_FEATURES = 16
+QUANTITY_ACTIONS = 9
+
+HISTORY_LENGTH = 10
+
+SAVE_EVERY = 50
+SAVE_PATH = 'saved_models/' + time.ctime() + '/'
+
+RESTORE = False
+ONLY_PLAY = False
+RESTORE_PATH = 'saved_models/Tue Nov  7 16:18:19 2017/452.ckpt'
+LEARN_START = 0 if RESTORE else 0

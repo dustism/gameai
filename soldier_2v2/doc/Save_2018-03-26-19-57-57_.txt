@@ -1,0 +1,184 @@
+{
+    "GameSpeed": 8.0,
+    "HerosInfoDataModel": [
+        {
+            "refreshID": 40121,
+            "heroID": 1,
+            "heroName": "Ashe",
+            "positionX": "-4.00",
+            "positionY": "0.00",
+            "positionZ": "-3.00",
+            "mHpPercent": 1001.0,
+            "mMpPercent": 441.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        },
+        {
+            "refreshID": 40122,
+            "heroID": 3,
+            "heroName": "Ashe",
+            "positionX": "-3.00",
+            "positionY": "0.00",
+            "positionZ": "-4.00",
+            "mHpPercent": 1001.0,
+            "mMpPercent": 441.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        },
+        {
+            "refreshID": 40221,
+            "heroID": 2,
+            "heroName": "Ashe",
+            "positionX": "5.00",
+            "positionY": "0.00",
+            "positionZ": "3.00",
+            "mHpPercent": 1001.0,
+            "mMpPercent": 441.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        },
+        {
+            "refreshID": 40222,
+            "heroID": 4,
+            "heroName": "Ashe",
+            "positionX": "3.00",
+            "positionY": "0.00",
+            "positionZ": "5.00",
+            "mHpPercent": 1001.0,
+            "mMpPercent": 441.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        }
+    ],
+    "SoldierInfoDataModel": [],
+    "BuliderInfoDataModel": [
+        {
+            "refreshID": 40131,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40132,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40133,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40134,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40135,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40136,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40137,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40138,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40139,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40144,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40145,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40141,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40142,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40143,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40146,
+            "mHpPercent": 5500.0
+        },
+        {
+            "refreshID": 40147,
+            "mHpPercent": 0.0
+        },
+        {
+            "refreshID": 40247,
+            "mHpPercent": 0.0
+        },
+        {
+            "refreshID": 40231,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40232,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40233,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40234,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40235,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40236,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40237,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40238,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40239,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40244,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40245,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40241,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40242,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40243,
+            "mHpPercent": 4000.0
+        },
+        {
+            "refreshID": 40246,
+            "mHpPercent": 5500.0
+        }
+    ]
+}

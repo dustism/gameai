@@ -1,0 +1,173 @@
+
+message AI_GameReadyInfo {
+	required bool GameReady = 1;
+}
+
+
+// ------------------------------
+// 以下描述游戏开始需要拿到的信息， 入口在AI_GameStartInfo
+// ------------------------------
+enum AI_SkillType {
+	TARGET = 1;
+	DIRECTION = 2;
+	NONE = 3;
+}
+
+message AI_SkillInitInfo {
+	required string button = 1;
+	required AI_SkillType skillType = 2;
+	optional float range = 3[default = 0];
+}
+
+message AI_HeroInitInfo {
+	required int32 refreshID = 1;
+	required int32 identityID = 2;
+	repeated AI_SkillInitInfo skillInitInfo = 3;
+}
+
+message AI_GameStartInfo {
+	repeated AI_HeroInitInfo heroInitInfo = 1;
+}
+
+
+//------------------------------
+// 以下描述每一帧需要拿到的信息, 入口在AI_Frame
+//------------------------------
+
+message AI_Vector3 {
+	required float x = 1;
+	required float y = 2;
+	required float z = 3;
+	optional float nord = 4[default = 1];
+}
+
+message AI_SkillInfo {
+	required string button = 1;
+	// 等级
+	required int32 grade = 2;
+	
+	// 消耗 蓝
+	required float cost = 3;
+	
+	// 总冷却时间 当前冷却时间
+	required float totalCD = 4;
+	required float currentCD = 5;
+	
+	// 伤害值
+	required float damage = 6;
+	
+	// 是否可用
+	required bool ready = 7;
+}
+
+message AI_Penerate {
+	// 百分比穿透
+	required float ratio = 1;
+	// 固定穿透
+	required float fixed = 2;
+}
+
+message AI_UnitAttribute{
+	// 移动速度
+	required float speed = 1;
+	
+	// 总血量 当期血量 总蓝量 当前蓝亮
+	required float totalHealth = 2;
+	required float currentHealth = 3;
+	required float totalMagic = 4;
+	required float currentMagic = 5;
+	
+	// 攻击 法强
+	required float attackStrength = 6;
+	required float magicStrengh = 7;
+	
+	// 攻速
+	required float attackSpeed = 8;
+	
+	// 暴击
+	required float critRatio = 9;
+	
+	// 护甲穿透 法术穿透
+	required AI_Penerate attackPenerate = 10;
+	required AI_Penerate magicPenerate = 11;
+	
+	// 护甲 魔抗
+	required float attackResist = 12;
+	required float magicResist = 13;
+	
+	// 冷却缩减
+	required float CD = 14;
+}
+
+message AI_HeroInfo {
+	// 英雄刷新ID
+	required int32 refreshID = 1;
+	
+	// 存活和复活时间
+	required bool alive = 2;
+	optional float recoverTime = 3;
+	
+	//位置和移动方向
+	required AI_Vector3 place = 4;
+	required AI_Vector3 moveDirection = 5;
+	
+	// 等级和经济
+	required float heroGrade = 6;
+	required float economy = 7;
+	
+	// 技能信息
+	repeated AI_SkillInfo skillInfo = 8;
+	
+	// 属性
+	required AI_UnitAttribute heroAttribute = 9;
+	
+	required bool movable = 10;
+	
+	required bool skillable = 11;
+}
+
+message AI_SoldierInfo {
+	required int32 identityID = 1;
+	required int32 refreshID = 2;
+	required AI_Vector3 place = 3;
+	required float health = 4;
+}
+
+message AI_TowerInfo {
+	required int32 refreshID = 1;
+	required float health = 2;
+}
+
+
+message AI_Frame{
+	repeated AI_HeroInfo heroInfo = 1;
+	repeated AI_SoldierInfo soldierInfo = 2;
+	repeated AI_TowerInfo towerInfo = 3;
+}
+
+
+// ------------------------
+// 以下描述AI发送的指令信息
+// ------------------------
+
+message AI_Move {
+	required int32 refreshID = 1;
+	required AI_Vector3 direction = 2;
+}
+
+message AI_TargetSkill {
+	required int32 refreshID = 1;
+	required string button = 2;
+	required int32 targetID = 3;
+}
+
+message AI_DirectionSkill {
+	required int32 refreshID = 1;
+	required string button = 2;
+	required AI_Vector3 direction =3;
+}
+
+message AI_NoneSkill {
+	required int32 refreshID = 1;
+	required string button = 2;
+}

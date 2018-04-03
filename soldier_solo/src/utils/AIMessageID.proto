@@ -1,0 +1,33 @@
+package protocol;
+
+enum C2S_AIMessageId{
+	
+	C2S_GameStartInfo_ID = 1;
+	
+	C2S_Frame_ID = 2;
+
+	C2S_GameReady_ID = 4;
+}
+
+enum S2C_AIMessageId{
+	// 游戏开始请求
+	S2C_GameStartRequest_ID = 100;
+
+	// 英雄移动
+    	S2C_HeroMove_ID = 101;    
+	
+	// 英雄向目标释放技能
+	S2C_HeroTargetSkill_ID = 102;
+
+	// 英雄向方向释放技能
+	S2C_HeroDirectionSkill_ID = 103;
+	
+	// 无目标无方向
+	S2C_HeroNoneSkill_ID = 104;
+
+	// 什么也不做，等下一帧
+	S2C_IDLE_ID = 105;
+
+	// 游戏结束
+	S2C_GameEnd_ID = 106;
+}

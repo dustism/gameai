@@ -1,0 +1,35 @@
+# ---adjusting parameters
+import time
+
+NORD = 1.0
+
+SKIP_FRAME = 2
+
+ATTACK_RANGE_SELF = 6.0
+ATTACK_RANGE_ENEMY = 1.75
+ATTACK_RANGE_TOWER = 8.0
+
+N_GAME = 4
+IP = '172.16.8.111'
+PORT = [12345, 12346, 12347, 12348]
+EVALUATION_PORT = 12348
+
+MAX_EPISODES = 2000
+
+QUANTITY_FEATURES = 16
+QUANTITY_ACTIONS = 9
+
+HISTORY_LENGTH = 10
+
+SAVE_EVERY = 50
+SAVE_PATH = 'saved_models/' + time.ctime() + '/'
+
+TRAIN_TIME_EACH = 50
+
+RESTORE = False  #
+ONLY_PLAY = False  #
+SAVE_STATES = False  #
+EVALUATION_FILE_PATH = 'evaluation_set.pickle'
+
+RESTORE_PATH = 'saved_models/solo_worked_model/600.ckpt'
+LEARN_START = 0 if RESTORE else 0

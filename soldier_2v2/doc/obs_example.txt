@@ -1,0 +1,840 @@
+heroInfo {
+  refreshID: 40121
+  alive: true
+  place {
+    x: -10.80767822265625
+    y: -9.078756306735158e-07
+    z: -7.64914608001709
+  }
+  moveDirection {
+    x: -0.8258013129234314
+    y: 0.0
+    z: -0.563961386680603
+  }
+  heroGrade: 6.0
+  economy: 0.0
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "Q"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "W"
+    grade: 3
+    cost: 50.0
+    totalCD: 8.0
+    currentCD: 0.0
+    damage: 113.0
+    ready: true
+  }
+  skillInfo {
+    button: "E"
+    grade: 1
+    cost: 0.0
+    totalCD: 5.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "R"
+    grade: 1
+    cost: 100.0
+    totalCD: 67.0
+    currentCD: 0.0
+    damage: 250.0
+    ready: true
+  }
+  skillInfo {
+    button: "P"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "B"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "N"
+    grade: 1
+    cost: 0.0
+    totalCD: 140.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "D"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "F"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  heroAttribute {
+    speed: 2.9574999809265137
+    totalHealth: 1001.0
+    currentHealth: 756.0
+    totalMagic: 441.0
+    currentMagic: 441.0
+    attackStrength: 63.0
+    magicStrengh: 0.0
+    attackSpeed: 0.8576949238777161
+    critRatio: 0.0
+    attackPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    magicPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    attackResist: 39.0
+    magicResist: 30.0
+    CD: 0.0
+  }
+  movable: true
+  skillable: false
+}
+heroInfo {
+  refreshID: 40122
+  alive: true
+  place {
+    x: -6.369843006134033
+    y: -6.560551923939784e-07
+    z: -5.536724090576172
+  }
+  moveDirection {
+    x: -0.9029262661933899
+    y: 0.0
+    z: -0.429795503616333
+  }
+  heroGrade: 6.0
+  economy: 0.0
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "Q"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "W"
+    grade: 3
+    cost: 50.0
+    totalCD: 8.0
+    currentCD: 0.0
+    damage: 113.0
+    ready: true
+  }
+  skillInfo {
+    button: "E"
+    grade: 1
+    cost: 0.0
+    totalCD: 5.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "R"
+    grade: 1
+    cost: 100.0
+    totalCD: 67.0
+    currentCD: 0.0
+    damage: 250.0
+    ready: true
+  }
+  skillInfo {
+    button: "P"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "B"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "N"
+    grade: 1
+    cost: 0.0
+    totalCD: 140.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "D"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "F"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  heroAttribute {
+    speed: 3.25
+    totalHealth: 1001.0
+    currentHealth: 1001.0
+    totalMagic: 441.0
+    currentMagic: 441.0
+    attackStrength: 63.0
+    magicStrengh: 0.0
+    attackSpeed: 0.8576949238777161
+    critRatio: 0.0
+    attackPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    magicPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    attackResist: 39.0
+    magicResist: 30.0
+    CD: 0.0
+  }
+  movable: true
+  skillable: false
+}
+heroInfo {
+  refreshID: 40221
+  alive: true
+  place {
+    x: 4.0
+    y: 3.6160162153464626e-07
+    z: 3.0
+  }
+  moveDirection {
+    x: 0.0
+    y: 0.0
+    z: 1.0
+  }
+  heroGrade: 6.0
+  economy: 0.0
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "Q"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "W"
+    grade: 3
+    cost: 50.0
+    totalCD: 8.0
+    currentCD: 0.0
+    damage: 113.0
+    ready: true
+  }
+  skillInfo {
+    button: "E"
+    grade: 1
+    cost: 0.0
+    totalCD: 5.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "R"
+    grade: 1
+    cost: 100.0
+    totalCD: 67.0
+    currentCD: 0.0
+    damage: 250.0
+    ready: true
+  }
+  skillInfo {
+    button: "P"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "B"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "N"
+    grade: 1
+    cost: 0.0
+    totalCD: 140.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "D"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "F"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  heroAttribute {
+    speed: 3.25
+    totalHealth: 1001.0
+    currentHealth: 1001.0
+    totalMagic: 441.0
+    currentMagic: 441.0
+    attackStrength: 63.0
+    magicStrengh: 0.0
+    attackSpeed: 0.8576949238777161
+    critRatio: 0.0
+    attackPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    magicPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    attackResist: 39.0
+    magicResist: 30.0
+    CD: 0.0
+  }
+  movable: true
+  skillable: false
+}
+heroInfo {
+  refreshID: 40222
+  alive: true
+  place {
+    x: 3.0
+    y: 4.808106268683332e-07
+    z: 4.0
+  }
+  moveDirection {
+    x: 0.0
+    y: 0.0
+    z: 1.0
+  }
+  heroGrade: 6.0
+  economy: 0.0
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "A"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 63.0
+    ready: true
+  }
+  skillInfo {
+    button: "Q"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "W"
+    grade: 3
+    cost: 50.0
+    totalCD: 8.0
+    currentCD: 0.0
+    damage: 113.0
+    ready: true
+  }
+  skillInfo {
+    button: "E"
+    grade: 1
+    cost: 0.0
+    totalCD: 5.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "R"
+    grade: 1
+    cost: 100.0
+    totalCD: 67.0
+    currentCD: 0.0
+    damage: 250.0
+    ready: true
+  }
+  skillInfo {
+    button: "P"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "B"
+    grade: 1
+    cost: 0.0
+    totalCD: 0.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "N"
+    grade: 1
+    cost: 0.0
+    totalCD: 140.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "D"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  skillInfo {
+    button: "F"
+    grade: 1
+    cost: 0.0
+    totalCD: 200.0
+    currentCD: 0.0
+    damage: 0.0
+    ready: true
+  }
+  heroAttribute {
+    speed: 3.25
+    totalHealth: 1001.0
+    currentHealth: 1001.0
+    totalMagic: 441.0
+    currentMagic: 441.0
+    attackStrength: 63.0
+    magicStrengh: 0.0
+    attackSpeed: 0.8576949238777161
+    critRatio: 0.0
+    attackPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    magicPenerate {
+      ratio: 0.0
+      fixed: 0.0
+    }
+    attackResist: 39.0
+    magicResist: 30.0
+    CD: 0.0
+  }
+  movable: true
+  skillable: false
+}
+soldierInfo {
+  identityID: 55574
+  refreshID: 40112
+  place {
+    x: -22.27418327331543
+    y: -2.6705070013122167e-06
+    z: -22.435171127319336
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 55758
+  refreshID: 40112
+  place {
+    x: -23.914121627807617
+    y: -2.8506469789135735e-06
+    z: -23.9462947845459
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 55942
+  refreshID: 40112
+  place {
+    x: -24.275270462036133
+    y: -2.930136133727501e-06
+    z: -24.613100051879883
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 56126
+  refreshID: 40112
+  place {
+    x: -25.668106079101562
+    y: 0.16753308475017548
+    z: -24.782939910888672
+  }
+  health: 300.0
+}
+soldierInfo {
+  identityID: 56326
+  refreshID: 40112
+  place {
+    x: -24.934295654296875
+    y: -2.9546094992838334e-06
+    z: -24.818397521972656
+  }
+  health: 300.0
+}
+soldierInfo {
+  identityID: 56526
+  refreshID: 40112
+  place {
+    x: -23.50560188293457
+    y: -2.9667269245692296e-06
+    z: -24.920045852661133
+  }
+  health: 828.0
+}
+soldierInfo {
+  identityID: 56686
+  refreshID: 40212
+  place {
+    x: 23.827848434448242
+    y: 2.916962557719671e-06
+    z: 24.43592643737793
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 56868
+  refreshID: 40212
+  place {
+    x: 24.86355972290039
+    y: 0.2972484827041626
+    z: 25.983675003051758
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 57050
+  refreshID: 40212
+  place {
+    x: 24.330577850341797
+    y: 0.16042464971542358
+    z: 25.187808990478516
+  }
+  health: 468.0
+}
+soldierInfo {
+  identityID: 57232
+  refreshID: 40212
+  place {
+    x: 25.45038414001465
+    y: 0.17639130353927612
+    z: 24.776342391967773
+  }
+  health: 300.0
+}
+soldierInfo {
+  identityID: 57414
+  refreshID: 40212
+  place {
+    x: 24.80800437927246
+    y: 2.88161436401424e-06
+    z: 24.139404296875
+  }
+  health: 300.0
+}
+soldierInfo {
+  identityID: 57596
+  refreshID: 40212
+  place {
+    x: 25.760791778564453
+    y: 0.3131570816040039
+    z: 26.24071502685547
+  }
+  health: 828.0
+}
+towerInfo {
+  refreshID: 40131
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40132
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40133
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40134
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40135
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40136
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40137
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40138
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40139
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40144
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40145
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40141
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40142
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40143
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40146
+  health: 5500.0
+}
+towerInfo {
+  refreshID: 40147
+  health: 0.0
+}
+towerInfo {
+  refreshID: 40247
+  health: 0.0
+}
+towerInfo {
+  refreshID: 40231
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40232
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40233
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40234
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40235
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40236
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40237
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40238
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40239
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40244
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40245
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40241
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40242
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40243
+  health: 4000.0
+}
+towerInfo {
+  refreshID: 40246
+  health: 5500.0
+}

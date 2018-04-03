@@ -1,0 +1,7 @@
+.idea/*
+*.pyc
+__pycache__/
+*.ckpt.*
+saved_models/*
+checkpoint
+*.ckpt.*

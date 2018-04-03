@@ -1,0 +1,29 @@
+﻿{
+    "HerosInfoDataModel": [
+        {
+            "refreshID": 40221,
+            "heroID": 3,
+            "heroName": "Ashe",
+            "positionX": 3.891017198562622,
+            "positionY": 1.839910765966124e-7,
+            "positionZ": 1.510096549987793,
+            "mHpPercent": 1001.0,
+            "mMpPercent": 441.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        },
+        {
+            "refreshID": 40121,
+            "heroID": 1,
+            "heroName": "DrMundo",
+            "positionX": 2.186868190765381,
+            "positionY": -7.5362144968949e-8,
+            "positionZ": -0.6655168533325195,
+            "mHpPercent": 1116.0,
+            "mMpPercent": 0.0,
+            "mLevel": 6,
+            "mCoinGoldNum": 0.0
+        }
+    ],
+    "SoldierInfoDataModel": []
+}
