@@ -79,37 +79,40 @@ class DeepQNetwork:
 
     def act(self, s, obs, hero_i, port, ai):
 
+        self_hero = obs.heroes[CAMP_RED][hero_i]
+        enemy_1 = obs.heroes[CAMP_BLUE][0]
+        enemy_2 = obs.heroes[CAMP_BLUE][1]
+
         if port % 5 != 0:
 
             if self.epsilon > 0.5:
 
                 if random.uniform(0, 1) < self.epsilon:
 
-                    self_place = obs.heroes[CAMP_RED][hero_i].place
-                    enemy_1_place = obs.heroes[CAMP_BLUE][0].place
-                    enemy_2_place = obs.heroes[CAMP_BLUE][1].place
-
-                    if obs.dis(self_place, enemy_1_place) < ATTACK_RANGE_HERO + 2\
-                            or obs.dis(self_place, enemy_2_place) < ATTACK_RANGE_HERO + 2:
-                        return 0
+                    if obs.dis(self_hero.place, enemy_1.place) < ATTACK_RANGE_HERO + 2\
+                            or obs.dis(self_hero.place, enemy_2.place) < ATTACK_RANGE_HERO + 2:
+                        if enemy_1.alive and enemy_1.health <= enemy_2.health or not enemy_2.alive:
+                            return 0
+                        else:
+                            return 1
 
                     message_id, message = ai.act(obs, hero_i)
                     if message_id != S2C_HeroMove_ID:
-                        return 0
+                        if random.uniform(0, 1) < 0.7:
+                            if enemy_1.alive and enemy_1.health <= enemy_2.health or not enemy_2.alive:
+                                return 0
+                            else:
+                                return 1
+                        else:
+                            return int(random.uniform(0, 1) * 6) + 2
                     else:
-                        return Observation.discretize(message.direction, 8)
+                        return 7 + Observation.discretize(message.direction, 8)
                 else:
-                    if random.uniform(0, 1) < 0.3:
-                        return np.random.choice(self.n_actions - 1) + 1
-                    else:
-                        return 0
-            else:
+                    return np.random.choice(self.n_actions)
 
+            else:
                 if random.uniform(0, 1) < self.epsilon:
-                    if random.uniform(0, 1) < 0.3:
-                        return np.random.choice(self.n_actions - 1) + 1
-                    else:
-                        return 0
+                    return np.random.choice(self.n_actions)
                 else:
                     action_values = self.sess.run(self.eval_output, feed_dict={self.eval_input: s[np.newaxis, :]})
                     return np.argmax(action_values, axis=1)[0]

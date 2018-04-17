@@ -10,12 +10,8 @@ class LOLAI:
 
     def act(self, obs, hero_i):
         self_hero = obs.heroes[self.camp][hero_i]
-        rd = round(random.uniform(0, 1))
-        if obs.heroes[1 - self.camp][rd].alive:
-            enemy_hero = obs.heroes[1 - self.camp][rd]  # randomly choose one from two enemies if both alive
-        else:
-            enemy_hero = obs.heroes[1 - self.camp][1 - rd]
         self_tower = obs.towers[self.camp]
+        enemies = obs.heroes[1 - self.camp]
         enemy_tower = obs.towers[1 - self.camp]
         if not self_hero.movable or not self_hero.alive:
             return Action.idle()
@@ -29,19 +25,28 @@ class LOLAI:
                 safe = True
             elif self.camp == CAMP_RED and x_diff < -1 and z_diff < -1:
                 safe = True
+            elif Observation.in_circle(self_hero.place, ATTACK_RANGE_TOWER - ATTACK_RANGE_HERO, self_tower.place):
+                safe = True
 
         if not safe:
             return Action.move_to(self_hero, self_tower.place)
 
-        hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
-        if hero_dist < self.attack_range and random.uniform(0, 1) < 0.5:
-            return Action.attack(self_hero, enemy_hero)
+        enemy_id = 0 if not enemies[1].alive or enemies[0].alive and enemies[0].health < enemies[1].health else 1
+
+        if random.uniform(0, 1) < 0.8:
+            hero_dist = Observation.dis(self_hero.place, enemies[enemy_id].place)
+            if hero_dist < self.attack_range:
+                return Action.attack(self_hero, enemies[enemy_id])
+            else:
+                hero_dist = Observation.dis(self_hero.place, enemies[1 - enemy_id].place)
+                if hero_dist < self.attack_range:
+                    return Action.attack(self_hero, enemies[1 - enemy_id])
 
         tower_dist = Observation.dis(self_hero.place, enemy_tower.place)
         if tower_dist < self.attack_range:
             return Action.attack(self_hero, enemy_tower)
 
-        sorted_soldiers = obs.get_soldiers(self_hero.place)
+        sorted_soldiers = obs.get_soldiers_by_dis(self_hero.place)
         if len(sorted_soldiers[1 - self.camp]) > 0:
             nearest_soldier_dist = Observation.dis(self_hero.place, sorted_soldiers[1 - self.camp][0].place)
             if nearest_soldier_dist < self.attack_range:

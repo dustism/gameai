@@ -88,7 +88,7 @@ class Observation:
             # Unlike hero and tower, soldiers differ from each other by their identityID, not refreshID
             self.soldiers[Observation.get_camp(soldier.refreshID)][soldier.identityID] = Soldier(soldier)
 
-    def get_soldiers(self, hero_place):
+    def get_soldiers_by_dis(self, hero_place):
         """
         Get all soldiers from both camps, soldiers of each camp are **SORTED** by distance from the selected hero.
         -- blue soldier refreshID: 40112, camp: 0
@@ -124,7 +124,7 @@ class Observation:
         hero_enemy_2 = self.heroes[1 - hero_camp][1]
         tower_self = self.towers[hero_camp]
         tower_enemy = self.towers[1 - hero_camp]
-        soldiers = self.get_soldiers(hero_self.place)
+        soldiers = self.get_soldiers_by_dis(hero_self.place)
 
         # ===================== features =====================
         feature.append(hero_self.alive)  # 1
@@ -174,7 +174,7 @@ class Observation:
 
         return np.array(feature)
 
-    def judge_winner(self, tower_least_hp=3850):
+    def judge_winner(self, tower_least_hp=3000):
         """
         First judge whether any camp's hero is dead, then judge whether any camp's tower is broken down.
 
@@ -207,11 +207,11 @@ class Observation:
             if winner == camp:
                 winner_score = 10
             elif winner == 1 - camp:
-                winner_score = -5
+                winner_score = -10
 
         # ========================  tower_score ========================
-        tower_score = - (obs_prev.towers[camp].health - obs_prev.towers[1 - camp].health) / 100.
-        tower_score += (self.towers[camp].health - self.towers[1 - camp].health) / 100.
+        tower_score = - (obs_prev.towers[camp].health - obs_prev.towers[1 - camp].health) / 1000.
+        tower_score += (self.towers[camp].health - self.towers[1 - camp].health) / 1000.
 
         # ======================== health_score ========================
         health_score = (self.hero_hp_diff(camp) - obs_prev.hero_hp_diff(camp)) / 1000.
@@ -227,7 +227,8 @@ class Observation:
         else:
             reward = winner_score - 0.004
 
-        return reward
+        return winner_score
+        # return reward
 
     def hero_hp_diff(self, camp):
         """
@@ -319,8 +320,8 @@ class Observation:
         return -bound < place.x < bound and -bound < place.z < bound
 
     @staticmethod
-    def in_circle(place, r):
-        return Observation.dis(place, Place(x=0., z=0.)) < r
+    def in_circle(place, r, center=Place(x=0., z=0.)):
+        return Observation.dis(place, center) < r
 
     @staticmethod
     def get_camp(refresh_id):
@@ -420,30 +421,32 @@ class Action:
         self_hero = obs.heroes[camp][hero_i]
         enemy_1 = obs.heroes[1 - camp][0]
         enemy_2 = obs.heroes[1 - camp][1]
-        if enemy_1.health <= enemy_2.health and enemy_1.alive:
-            healthless_enemy = enemy_1
-        else:
-            healthless_enemy = enemy_2
+        enemy_tower = obs.towers[1 - camp]
 
+        # attack enemy_1
         if action == 0:
-            # action 0 is defined to be ATTACK
-
-            # attack enemy with less health first
-            enemy_dist = Observation.dis(self_hero.place, healthless_enemy.place)
-            if enemy_dist < ATTACK_RANGE_HERO:
-                return Action.attack(self_hero, healthless_enemy)
-
-            tower_dist = Observation.dis(self_hero.place, PLACE_TOWER[1 - camp])
-            if tower_dist < ATTACK_RANGE_HERO:
-                return Action.attack(self_hero, obs.towers[1 - camp])
-
-            soldiers = obs.get_soldiers(self_hero.place)
-            if len(soldiers[1 - camp]) > 0:
-                nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
-                if nearest_soldier_dist < ATTACK_RANGE_HERO:
-                    return Action.attack(self_hero, soldiers[1 - camp][0])
-
-            return Action.move(self_hero, Observation.dir(self_hero.place, healthless_enemy.place))
+            if enemy_1.alive:
+                return Action.want_to_attack(self_hero, enemy_1, ATTACK_RANGE_HERO)
+            else:
+                return Action.idle()
+        # attack enemy_2
+        elif action == 1:
+            if enemy_2.alive:
+                return Action.want_to_attack(self_hero, enemy_2, ATTACK_RANGE_HERO)
+            else:
+                return Action.idle()
+        # attack tower
+        elif action == 2:
+            return Action.want_to_attack(self_hero, enemy_tower, ATTACK_RANGE_HERO)
+        # attack soldier
+        elif 3 <= action < 3 + SOLDIERS_CONSIDER:
+            soldier_id = action - 3
+            soldiers = obs.get_soldiers_by_dis(self_hero.place)
+            # if the attacked soldier really exists
+            if soldier_id < len(soldiers[1 - camp]):
+                return Action.want_to_attack(self_hero, soldiers[1 - camp][soldier_id], ATTACK_RANGE_HERO)
+            else:
+                return Action.idle()
         else:
-            angle = 2 * math.pi / (QUANTITY_ACTIONS - 3) * action
+            angle = 2 * math.pi / (QUANTITY_ACTIONS - 3 - SOLDIERS_CONSIDER) * action
             return Action.move(self_hero, Place(x=math.cos(angle), z=math.sin(angle)))

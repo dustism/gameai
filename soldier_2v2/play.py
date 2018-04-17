@@ -39,9 +39,10 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
             while True:
                 # ======================================= select ai and act ===========================================
                 ai_camp = frame_counter % 2
+                winner = obs.judge_winner()
 
                 if ai_camp == CAMP_BLUE:
-                    if obs.judge_winner() is None:
+                    if winner is None:
                         # select rule-based AI as player and make decision
                         ai = rule
                         # take action
@@ -57,7 +58,7 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
                     # put s-a-r-s' trajectory into history
                     score += hero_sars[red_hero_i].end(obs)
 
-                    if obs.judge_winner() is None:
+                    if winner is None:
                         # select NN as player and make decision
                         ai = self_ai
                         # hero_sars[red_hero_i].s1 is now the newest extracted feature
@@ -73,7 +74,6 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
                         score += hero_sars[1 - red_hero_i].end(obs)
 
                 # ======================================= when the game ends ==========================================
-                winner = obs.judge_winner()
                 if winner is not None or frame_counter >= MAX_FRAMES_PER_EPISODE:
                     print()
                     # ============= time printer =============
