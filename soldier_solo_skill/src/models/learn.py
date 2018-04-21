@@ -93,9 +93,12 @@ class DeepQNetwork:
                         return 0
                     elif message_id == S2C_HeroDirectionSkill_ID:
                         return 1
-                    else:
+                    elif message_id == S2C_HeroMove_ID:
                         # 2～9 for all directions
                         return Observation.discretize(message.direction, 8) + 1
+                    else:
+                        #idle
+                        return 0
                 else:
                     temp = random.uniform(0, 1)
                     if temp < 0.3:
