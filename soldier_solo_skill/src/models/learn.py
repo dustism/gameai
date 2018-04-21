@@ -89,9 +89,12 @@ class DeepQNetwork:
                         return 0
 
                     message_id, message = ai.act(obs)
-                    if message_id != S2C_HeroMove_ID:
+                    if message_id == S2C_HeroTargetSkill_ID:
                         return 0
+                    elif message_id == S2C_HeroDirectionSkill_ID:
+                        return 1
                     else:
+                        # 2～9 for all directions
                         return Observation.discretize(message.direction, 8) + 1
                 else:
                     temp = random.uniform(0, 1)

@@ -451,5 +451,5 @@ class Action:
 
             return Action.move(self_hero, Observation.dir(self_hero.place, enemy_hero.place))
         else:
-            angle = 2 * math.pi / (QUANTITY_ACTIONS - 1) * (action - 1)
+            angle = 2 * math.pi / (QUANTITY_ACTIONS - 2) * (action - 1)
             return Action.move(self_hero, Place(x=math.cos(angle), z=math.sin(angle)))
