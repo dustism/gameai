@@ -45,5 +45,5 @@ SAVE_PATH = 'saved_models/' + time.ctime() + '/'
 RESTORE = False
 RESET_EPSILON = True
 ONLY_PLAY = False
-RESTORE_PATH = 'saved_models/beat_defensive_ai_2ed/2001.ckpt'
+RESTORE_PATH = 'saved_models/Tue Apr 24 10:38:32 2018/50001.ckpt'
 LEARN_START = 0

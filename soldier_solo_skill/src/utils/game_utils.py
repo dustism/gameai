@@ -33,6 +33,7 @@ class Hero(Unit):
         self.movable = hero.movable
         self.alive = hero.alive
         self.moveDirection = hero.moveDirection
+        self.skillInfo = hero.skillInfo
 
 
 class Tower(Unit):
@@ -314,6 +315,7 @@ class Observation:
             self.build(env.step(message_id, message))
 
 
+
 class Action:
     # ============ three basic actions ============
     @staticmethod
@@ -405,6 +407,12 @@ class Action:
         """Move to a specific place."""
         return Action.move(hero, Observation.dir(hero.place, place))
 
+    @staticmethod
+    def skill_ready(hero, button):
+        for this_skill in hero.skillInfo:
+            if this_skill.button == button:
+                return this_skill.ready
+
     # ============ auxiliary functions ============
     @staticmethod
     def wrap_action(action, obs, camp):
@@ -440,14 +448,24 @@ class Action:
         elif action == 1:
             # action 1 is defined to be use skill
             hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
-            if hero_dist < ATTACK_RANGE_HERO[camp]:
-                return Action.skill(self_hero, enemy_hero, 'W')
+            if Action.skill_ready(self_hero, 'W'):
+                if hero_dist < ATTACK_RANGE_HERO[camp] + 2:
+                    return Action.skill(self_hero, enemy_hero, 'W')
 
-            soldiers = obs.get_soldiers(self_hero.place)
-            if len(soldiers[1 - camp]) > 0:
-                nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
-                if nearest_soldier_dist < ATTACK_RANGE_HERO[camp]:
-                    return Action.skill(self_hero, soldiers[1 - camp][0], 'W')
+                soldiers = obs.get_soldiers(self_hero.place)
+                if len(soldiers[1 - camp]) > 0:
+                    nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
+                    if nearest_soldier_dist < ATTACK_RANGE_HERO[camp] + 2:
+                        return Action.skill(self_hero, soldiers[1 - camp][0], 'W')
+            else:
+                if hero_dist < ATTACK_RANGE_HERO[camp]:
+                    return Action.attack(self_hero, enemy_hero)
+
+                soldiers = obs.get_soldiers(self_hero.place)
+                if len(soldiers[1 - camp]) > 0:
+                    nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
+                    if nearest_soldier_dist < ATTACK_RANGE_HERO[camp]:
+                        return Action.attack(self_hero, soldiers[1 - camp][0])
 
             return Action.move(self_hero, Observation.dir(self_hero.place, enemy_hero.place))
         else:
