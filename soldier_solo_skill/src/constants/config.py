@@ -6,7 +6,7 @@ import collections
 Place = collections.namedtuple('Place', 'x z')
 
 # ====== About the game =======
-ATTACK_RANGE_HERO = [6, 6.]
+ATTACK_RANGE_HERO = [6., 6.]
 TOWER_ID = [40132, 40232]
 ATTACK_RANGE_TOWER = 8
 PLACE_TOWER = [Place(x=-12.2, z=-8.6), Place(x=12.2, z=8.6)]
@@ -20,7 +20,7 @@ QUANTITY_ACTIONS = 10
 # ====== About communications ======
 
 SKIP_FRAME = 2
-N_GAMES = 50
+N_GAMES = 20
 IP = '59.78.31.93'
 PORT = [12345 + i for i in range(N_GAMES)]
 
@@ -28,7 +28,7 @@ PORT = [12345 + i for i in range(N_GAMES)]
 # ===== About the scene ===========
 NORD = 1.0
 SOLDIERS_CONSIDER = 5
-PLAYERS_EVERY_SIDE = 2
+PLAYERS_EVERY_SIDE = 1
 MAX_FRAMES_PER_EPISODE = 3000
 HISTORY_LENGTH = 10
 

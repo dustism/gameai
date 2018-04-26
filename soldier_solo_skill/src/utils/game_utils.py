@@ -268,7 +268,6 @@ class Observation:
 
         return discrete_value
 
-
     @staticmethod
     def _dis_and_dir(feature, vector_1, vector_2):
         """Auxiliary method for feature extraction only"""
@@ -313,7 +312,6 @@ class Observation:
             if self.judge_winner() is not None:
                 break  # break if the game ends according to our definition
             self.build(env.step(message_id, message))
-
 
 
 class Action:
@@ -364,22 +362,20 @@ class Action:
 
         :param hero: class <Hero>
         :param target: any subclass of <unit>
-        :param button: "Q", "W", "E", "R"
         """
         message = AI_DirectionSkill()
         message.refreshID = hero.refreshID
         normdir = Observation.dir(hero.place, target.place)
         message.button = 'W'
-        #message.direction.x = normdir.x * hero.moveDirection.x - normdir.z * hero.moveDirection.z
-        #message.direction.z = normdir.z * hero.moveDirection.x + normdir.x * hero.moveDirection.z
+        # message.direction.x = normdir.x * hero.moveDirection.x - normdir.z * hero.moveDirection.z
+        # message.direction.z = normdir.z * hero.moveDirection.x + normdir.x * hero.moveDirection.z
         message.direction.x = normdir.x
         message.direction.z = normdir.z
         message.direction.y = 0
-        #print()
-        #print(normdir)
-        #print(message.direction.x, message.direction.z)
+        # print()
+        # print(normdir)
+        # print(message.direction.x, message.direction.z)
         return S2C_HeroDirectionSkill_ID, message
-
 
     # ============ auxiliary actions ============
     @staticmethod
@@ -444,7 +440,7 @@ class Action:
                 if nearest_soldier_dist < ATTACK_RANGE_HERO[camp]:
                     return Action.attack(self_hero, soldiers[1 - camp][0])
 
-            return Action.move(self_hero, Observation.dir(self_hero.place, enemy_hero.place))
+            return Action.idle()
         elif action == 1:
             # action 1 is defined to be use skill
             hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
@@ -457,17 +453,8 @@ class Action:
                     nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
                     if nearest_soldier_dist < ATTACK_RANGE_HERO[camp] + 2:
                         return Action.skill(self_hero, soldiers[1 - camp][0], 'W')
-            else:
-                if hero_dist < ATTACK_RANGE_HERO[camp]:
-                    return Action.attack(self_hero, enemy_hero)
 
-                soldiers = obs.get_soldiers(self_hero.place)
-                if len(soldiers[1 - camp]) > 0:
-                    nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
-                    if nearest_soldier_dist < ATTACK_RANGE_HERO[camp]:
-                        return Action.attack(self_hero, soldiers[1 - camp][0])
-
-            return Action.move(self_hero, Observation.dir(self_hero.place, enemy_hero.place))
+            return Action.idle()
         else:
             angle = 2 * math.pi / (QUANTITY_ACTIONS - 2) * (action - 1)
             return Action.move(self_hero, Place(x=math.cos(angle), z=math.sin(angle)))

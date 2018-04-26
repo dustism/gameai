@@ -9,7 +9,6 @@ from src.players.defensive_ai import LOLAI
 
 import time
 import queue
-import copy
 import tensorflow as tf
 import threading as td
 
@@ -30,58 +29,51 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
             synchronize_version(self_ai, parent_ai)
             obs.build(env.reset()[1])
             episode += 1
-            score = 0  # accumulated reward along the whole episode
-
             time_start = time.time()
-            reward = 0
+
+            hero_sars = SARS(history, data_queue, CAMP_RED)
+            score = 0  # accumulated reward along the whole episode added from two players
 
             while True:
                 # ======================================= select ai and act ===========================================
-                ai_id = frame_counter % 2
+                ai_camp = frame_counter % 2
+                winner = obs.judge_winner()
 
-                if ai_id == CAMP_BLUE:
-                    ai = rule
-                    obs_prev = copy.deepcopy(obs)
+                if ai_camp == CAMP_BLUE:
+                    if winner is None:
+                        # select rule-based AI as player and make decision
+                        ai = rule
+                        # take action
+                        obs.consume_frame(SKIP_FRAME, env, ai.act(obs))
+                    else:
+                        # when the game is end, shape reward sand save trajectory for NN players
+                        score += hero_sars.end(obs)
 
-                    # act
-                    obs.consume_frame(SKIP_FRAME, env, ai.act(obs))
+                else:  # CAMP_RED
+                    # put s-a-r-s' trajectory into history
+                    score += hero_sars.end(obs)
 
-                    winner = obs.judge_winner()
-                    reward = obs.shape_reward(obs_prev, CAMP_RED, winner)  # always consider the red's reward
+                    if winner is None:
+                        # select NN as player and make decision
+                        ai = self_ai
+                        # hero_sars.s1 is now the newest extracted feature
+                        output = ai.act(hero_sars.s1, obs, port, explorer)
+                        # save action
+                        hero_sars.get_action(output)
+                        # take action
+                        obs.consume_frame(SKIP_FRAME, env, Action.wrap_action(output, obs, CAMP_RED))
+                    else:
+                        # when the game is end, shape reward sand save trajectory
+                        score += hero_sars.end(obs)
 
-                    # store history in this section only when someone wins
-                    if winner:
-                        done = 1.
-                        history.put((feature_prev, output, reward, feature, done))
-                        if history.full():
-                            data_queue.put(history.get())
-                        score += reward
-
-                else:
-                    ai = self_ai
-                    obs_prev = copy.deepcopy(obs)
-                    feature_prev = obs.extract_feature(CAMP_RED, SOLDIERS_CONSIDER)
-                    output = ai.act(feature_prev, obs, port, explorer)
-
-                    # act
-                    obs.consume_frame(SKIP_FRAME, env, Action.wrap_action(output, obs, CAMP_RED))
-
-                    winner = obs.judge_winner()
-                    reward += obs.shape_reward(obs_prev, CAMP_RED, winner)
-
-                    done = 1. if winner is not None else 0.
-                    feature = obs.extract_feature(CAMP_RED, SOLDIERS_CONSIDER)
-                    history.put((feature_prev, output, reward, feature, done))
-                    if history.full():
-                        data_queue.put(history.get())
-                    score += reward
-
+                # ======================================= when the game ends ==========================================
                 if winner is not None or frame_counter >= MAX_FRAMES_PER_EPISODE:
-                    time_cost = time.time() - time_start
                     print()
+                    # ============= time printer =============
+                    time_cost = time.time() - time_start
                     print("Port {}'s episode {} ends, time : {:.2f}s, every player has {:.2f} frames in 1s."
-                          .format(port, episode, time_cost, frame_counter / 2. / time_cost))
-
+                          .format(port, episode, time_cost, frame_counter / (PLAYERS_EVERY_SIDE*2) / time_cost))
+                    # ============ winner printer ============
                     if winner is not None:
                         if winner == CAMP_RED:
                             print('CAMP_RED win!')
@@ -89,7 +81,7 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
                             print('CAMP_BLUE win!')
                     else:
                         print('No winner...')
-
+                    # ============ score handler =============
                     print("Score: {:2f}".format(score))
                     if port % 5 == 0:
                         score_queue.put(score)
@@ -98,7 +90,8 @@ def play(ip, port, self_ai, parent_ai, data_queue, score_queue):
                     env.end()
                     break
 
-                frame_counter = frame_counter + 1
+                # ========================================== count frames =============================================
+                frame_counter += 1
 
 
 if __name__ == '__main__':

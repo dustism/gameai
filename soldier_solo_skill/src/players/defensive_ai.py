@@ -29,7 +29,7 @@ class LOLAI:
         if not safe:
             return Action.move_to(self_hero, self_tower.place)
         hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
-        if hero_dist < self.attack_range and random.uniform(0, 1) < 0.5 and Action.skill_ready(self_hero, "W"):
+        if hero_dist < self.attack_range + 2 and random.uniform(0, 1) < 0.3 and Action.skill_ready(self_hero, "W"):
             return Action.skill(self_hero, enemy_hero, 'W')
         elif hero_dist < self.attack_range:
             return Action.attack(self_hero, enemy_hero)
@@ -41,7 +41,7 @@ class LOLAI:
         sorted_soldiers = obs.get_soldiers(self_hero.place)
         if len(sorted_soldiers[1 - self.camp]) > 0:
             nearest_soldier_dist = Observation.dis(self_hero.place, sorted_soldiers[1 - self.camp][0].place)
-            if nearest_soldier_dist < self.attack_range and random.uniform(0, 1) < 0.5 and Action.skill_ready(self_hero, "W"):
+            if nearest_soldier_dist < self.attack_range + 2 and random.uniform(0, 1) < 0.3 and Action.skill_ready(self_hero, "W"):
                 return Action.skill(self_hero, sorted_soldiers[1 - self.camp][0], 'W')
             elif nearest_soldier_dist < self.attack_range:
                 return Action.attack(self_hero, sorted_soldiers[1 - self.camp][0])

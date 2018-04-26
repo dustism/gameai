@@ -1,12 +1,51 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import numpy as np
+import copy
+
+from ..constants.config import *
+
+
+class SARS:
+    """ Reward shaping, trajectory saving... All the trivial matters are done within this class. """
+    def __init__(self, history, data_queue, camp):
+        self.history = history
+        self.data_queue = data_queue
+        self.camp = camp
+
+        self.obs0 = None
+
+        self.s0 = None
+        self.a = None
+        self.r = 0
+        self.s1 = None
+
+    def get_action(self, action):
+        self.a = action
+
+    def end(self, obs):
+        self.s1 = obs.extract_feature(self.camp, SOLDIERS_CONSIDER)
+        winner = obs.judge_winner()
+
+        # when feature is formed first time, namely there's no s0, just skip
+        if self.s0 is not None:
+            done = 1. if winner is not None else 0.
+            self.r = obs.shape_reward(self.obs0, self.camp, winner)
+            self.history.put((self.s0, self.a, self.r, self.s1, done))
+            if self.history.full():
+                self.data_queue.put(self.history.get())
+
+        # renew the start state and observation
+        self.s0 = self.s1
+        self.obs0 = copy.deepcopy(obs)
+
+        return self.r
 
 
 class Memory:
     def __init__(self, capacity):
         self.capacity = capacity
-        self.data = np.zeros(capacity, dtype = object)
+        self.data = np.zeros(capacity, dtype=object)
         self.index = -1
 
     def store(self, experience):
@@ -14,7 +53,7 @@ class Memory:
         self.data[self.index % self.capacity] = experience
 
     def sample(self, batch_size):
-        sample_index = np.random.choice(min(self.index, self.capacity), size = batch_size)
+        sample_index = np.random.choice(min(self.index, self.capacity), size=batch_size)
         return self.data[sample_index]
 
 
@@ -51,7 +90,7 @@ class ScorePlotter:
         plt.ion()
         self.fig = plt.figure()
         self.x_upperlim = 20
-        self.ax = plt.axes(xlim=(0, self.x_upperlim), ylim=(-20, 10))
+        self.ax = plt.axes(xlim=(0, self.x_upperlim), ylim=(-15, 15))
         self.ax.grid()
         self.line, = self.ax.plot([], [], lw=2)
         plt.pause(0.02)
