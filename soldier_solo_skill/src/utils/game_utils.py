@@ -33,7 +33,15 @@ class Hero(Unit):
         self.movable = hero.movable
         self.alive = hero.alive
         self.moveDirection = hero.moveDirection
-        self.skillInfo = hero.skillInfo
+        self.mp = hero.heroAttribute.currentMagic
+        self.skill_cost = dict()
+        self.skill_currentCD = dict()
+        self.skill_ready = dict()
+        for this_skill in hero.skillInfo:
+            if this_skill.button == "W":
+                self.skill_cost[this_skill.button] = this_skill.cost
+                self.skill_currentCD[this_skill.button] = this_skill.currentCD
+                self.skill_ready[this_skill.button] = this_skill.ready
 
 
 class Tower(Unit):
@@ -89,7 +97,7 @@ class Observation:
             # Unlike hero and tower, soldiers differ from each other by their identityID, not refreshID
             self.soldiers[Observation.get_camp(soldier.refreshID)][soldier.identityID] = Soldier(soldier)
 
-    def get_soldiers(self, hero_place):
+    def get_soldiers_by_dis(self, hero_place):
         """
         Get all soldiers from both camps, soldiers of each camp are **SORTED** by distance from the selected hero.
         -- blue soldier refreshID: 40112, camp: 0
@@ -122,7 +130,7 @@ class Observation:
         place_enemy = self.heroes[1 - hero_camp].place
         place_self_tower = self.towers[hero_camp].place
         place_enemy_tower = self.towers[1 - hero_camp].place
-        soldiers = self.get_soldiers(place_self)
+        soldiers = self.get_soldiers_by_dis(place_self)
 
         # ===================== features =====================
         Observation._append_vector(feature, place_self)
@@ -133,6 +141,15 @@ class Observation:
 
         feature.append(self.heroes[hero_camp].health / 1000.)
         feature.append(self.heroes[1 - hero_camp].health / 1000.)
+        feature.append(self.heroes[hero_camp].mp / 1000.)
+        feature.append(self.heroes[1 - hero_camp].mp / 1000.)
+        feature.append(self.heroes[hero_camp].skill_cost["W"])
+        feature.append(self.heroes[1 - hero_camp].skill_cost["W"])
+        feature.append(self.heroes[hero_camp].skill_currentCD["W"])
+        feature.append(self.heroes[1 - hero_camp].skill_currentCD["W"])
+        feature.append(self.heroes[hero_camp].skill_ready["W"])
+        feature.append(self.heroes[1 - hero_camp].skill_ready["W"])
+
         feature.append(self.towers[hero_camp].health / 1000.)
         feature.append(self.towers[1 - hero_camp].health / 1000.)
 
@@ -163,7 +180,7 @@ class Observation:
 
         return np.array(feature)
 
-    def judge_winner(self, tower_least_hp=3850):
+    def judge_winner(self, tower_least_hp=3500):
         """
         First judge whether any camp's hero is dead, then judge whether any camp's tower is broken down.
 
@@ -290,8 +307,8 @@ class Observation:
         return -bound < place.x < bound and -bound < place.z < bound
 
     @staticmethod
-    def in_circle(place, r):
-        return Observation.dis(place, Place(x=0., z=0.)) < r
+    def in_circle(place, r, center=Place(x=0., z=0.)):
+        return Observation.dis(place, center) < r
 
     @staticmethod
     def get_camp(refresh_id):
@@ -365,12 +382,12 @@ class Action:
         """
         message = AI_DirectionSkill()
         message.refreshID = hero.refreshID
-        normdir = Observation.dir(hero.place, target.place)
-        message.button = 'W'
+        norm_dir = Observation.dir(hero.place, target.place)
+        message.button = button
         # message.direction.x = normdir.x * hero.moveDirection.x - normdir.z * hero.moveDirection.z
         # message.direction.z = normdir.z * hero.moveDirection.x + normdir.x * hero.moveDirection.z
-        message.direction.x = normdir.x
-        message.direction.z = normdir.z
+        message.direction.x = norm_dir.x
+        message.direction.z = norm_dir.z
         message.direction.y = 0
         # print()
         # print(normdir)
@@ -392,10 +409,8 @@ class Action:
         """First move closer to the target straightly, then attack."""
         dist = Observation.dis(hero.place, target.place)
         if dist < attack_range:
-            print(2221)
             return Action.attack(hero, target)
         else:
-            print(2222)
             return Action.move(hero, Observation.dir(hero.place, target.place))
 
     @staticmethod
@@ -405,9 +420,7 @@ class Action:
 
     @staticmethod
     def skill_ready(hero, button):
-        for this_skill in hero.skillInfo:
-            if this_skill.button == button:
-                return this_skill.ready
+        return hero.skill_ready[button]
 
     # ============ auxiliary functions ============
     @staticmethod
@@ -420,41 +433,29 @@ class Action:
 
         self_hero = obs.heroes[camp]
         enemy_hero = obs.heroes[1 - camp]
+        enemy_tower = obs.towers[1 - camp]
+        soldiers = obs.get_soldiers_by_dis(self_hero.place)
 
+        # attack enemy
         if action == 0:
-            # action 0 is defined to be ATTACK
-            hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
-            if hero_dist < ATTACK_RANGE_HERO[camp]:
-                return Action.attack(self_hero, enemy_hero)
-            # else:
-            #     return Action.move(self_hero, Observation.dir(self_hero.place, enemy_hero.place))
-            # """Note that for this version the controlled hero attack enemy hero only."""
-
-            tower_dist = Observation.dis(self_hero.place, PLACE_TOWER[1 - camp])
-            if tower_dist < ATTACK_RANGE_HERO[camp]:
-                return Action.attack(self_hero, obs.towers[1 - camp])
-
-            soldiers = obs.get_soldiers(self_hero.place)
-            if len(soldiers[1 - camp]) > 0:
-                nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
-                if nearest_soldier_dist < ATTACK_RANGE_HERO[camp]:
-                    return Action.attack(self_hero, soldiers[1 - camp][0])
-
-            return Action.idle()
-        elif action == 1:
-            # action 1 is defined to be use skill
-            hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
+            return Action.want_to_attack(self_hero, enemy_hero, ATTACK_RANGE_HERO[camp])
+        # use skill to enemy
+        if action == 1:
             if Action.skill_ready(self_hero, 'W'):
-                if hero_dist < ATTACK_RANGE_HERO[camp] + 2:
-                    return Action.skill(self_hero, enemy_hero, 'W')
-
-                soldiers = obs.get_soldiers(self_hero.place)
-                if len(soldiers[1 - camp]) > 0:
-                    nearest_soldier_dist = Observation.dis(self_hero.place, soldiers[1 - camp][0].place)
-                    if nearest_soldier_dist < ATTACK_RANGE_HERO[camp] + 2:
-                        return Action.skill(self_hero, soldiers[1 - camp][0], 'W')
-
-            return Action.idle()
+                return Action.skill(self_hero, enemy_hero, 'W')
+            else:
+                return Action.idle()
+        # attack tower
+        elif action == 2:
+            return Action.want_to_attack(self_hero, enemy_tower, ATTACK_RANGE_HERO[camp])
+        # attack soldier
+        elif 3 <= action < 3 + SOLDIERS_CONSIDER:
+            soldier_id = action - 3
+            # if the attacked soldier really exists
+            if soldier_id < len(soldiers[1 - camp]):
+                return Action.want_to_attack(self_hero, soldiers[1 - camp][soldier_id], ATTACK_RANGE_HERO[camp])
+            else:
+                return Action.idle()
         else:
-            angle = 2 * math.pi / (QUANTITY_ACTIONS - 2) * (action - 1)
+            angle = 2 * math.pi / (QUANTITY_ACTIONS - 3 - SOLDIERS_CONSIDER) * action
             return Action.move(self_hero, Place(x=math.cos(angle), z=math.sin(angle)))

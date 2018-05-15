@@ -24,7 +24,9 @@ class DeepQNetwork:
         batch_size=2000,
         epsilon_decrement=0.0005,
         epsilon_lower=0.2,
-        learn_start=200
+        learn_start=200,
+        double=True,
+        dueling=True
     ):
 
         self.n_features = n_features
@@ -51,14 +53,23 @@ class DeepQNetwork:
             self.update_epsilon = tf.assign(self._epsilon, self._epsilon - self._epsilon_decrement)
             self.reset_epsilon = tf.assign(self._epsilon, 1)
 
-            self.eval_output = model(inputs=self.eval_input, n_output=n_actions, scope='eval_net', hiddens=hiddens)
-            self.target_output = tf.stop_gradient(
-                model(inputs=self.target_input, n_output=n_actions, scope='target_net', hiddens=hiddens))
+            self.eval_output = model(
+                inputs=self.eval_input, n_output=n_actions, scope='eval_net', hiddens=hiddens, dueling=dueling)
+            self.target_output = tf.stop_gradient(model(
+                inputs=self.target_input, n_output=n_actions, scope='target_net', hiddens=hiddens, dueling=dueling))
 
-        self.eval_output_selected = tf.reduce_sum(
-            self.eval_output * tf.one_hot(self.actions_selected, n_actions), axis=1)
-        self.eval_output_target = self.rewards + \
-            self.decays * tf.reduce_max(self.target_output, axis=1) * (1. - self.done)
+        if double:
+            with tf.variable_scope(scope, reuse=True):
+                self.eval_next_output = tf.stop_gradient(model(
+                    inputs=self.target_input, n_output=n_actions, scope='eval_net', hiddens=hiddens, dueling=dueling))
+                self.later_return = tf.reduce_sum(
+                    self.target_output * tf.one_hot(tf.argmax(self.eval_next_output, axis=1), n_actions), axis=1)
+        else:
+            self.later_return = tf.reduce_max(self.target_output, axis=1)
+
+        self.eval_output_selected = \
+            tf.reduce_sum(self.eval_output * tf.one_hot(self.actions_selected, n_actions), axis=1)
+        self.eval_output_target = self.rewards + self.decays * self.later_return * (1. - self.done)
 
         self.loss = tf.reduce_mean(tf.squared_difference(self.eval_output_selected, self.eval_output_target))
         self.train = tf.train.AdamOptimizer(learning_rate).minimize(self.loss)
@@ -85,38 +96,24 @@ class DeepQNetwork:
 
                 if random.uniform(0, 1) < self.epsilon:
 
-                    if obs.dis(obs.heroes[0].place, obs.heroes[1].place) < ATTACK_RANGE_HERO[1] + 2:
+                    if obs.dis(obs.heroes[0].place, obs.heroes[1].place) < SKILL_RANGE_HERO[1]:
+                        if Action.skill_ready(obs.heroes[1], 'W'):
+                            return 1
+
+                    if obs.dis(obs.heroes[0].place, obs.heroes[1].place) < ATTACK_RANGE_HERO[1]:
                         return 0
 
                     message_id, message = ai.act(obs)
-                    if message_id == S2C_HeroTargetSkill_ID:
-                        return 0
-                    elif message_id == S2C_HeroDirectionSkill_ID:
-                        return 1
-                    elif message_id == S2C_HeroMove_ID:
-                        # 2～9 for all directions
-                        return Observation.discretize(message.direction, 8) + 1
+                    if message_id != S2C_HeroMove_ID:
+                        return int(random.uniform(0, 1) * 6) + 2  # 2(tower), 3-7(soldiers)
                     else:
-                        #idle
-                        return 0
+                        return 7 + Observation.discretize(message.direction, 8)  # 8-15
                 else:
-                    temp = random.uniform(0, 1)
-                    if temp < 0.3:
-                        return np.random.choice(self.n_actions - 2) + 2
-                    elif temp < 0.4:
-                        return 1
-                    else:
-                        return 0
-            else:
+                    return np.random.choice(self.n_actions)
 
+            else:
                 if random.uniform(0, 1) < self.epsilon:
-                    temp = random.uniform(0, 1)
-                    if temp < 0.3:
-                        return np.random.choice(self.n_actions - 2) + 2
-                    elif temp < 0.4:
-                        return 1
-                    else:
-                        return 0
+                    return np.random.choice(self.n_actions)
                 else:
                     action_values = self.sess.run(self.eval_output, feed_dict={self.eval_input: s[np.newaxis, :]})
                     return np.argmax(action_values, axis=1)[0]
@@ -130,10 +127,9 @@ class DeepQNetwork:
 
     def learn(self):
         if self.learn_step % 100 == 1:
-            print(self.memory.index, self.batch_size * 10)
-            print(self.learn_step, self.learn_start)
+            print(self.memory.index, self.learn_start)
 
-        if self.memory.index < self.batch_size * 10 or self.learn_step < self.learn_start:
+        if self.memory.index < self.learn_start:
             return
         self.learn_step += 1
 

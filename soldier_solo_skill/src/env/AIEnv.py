@@ -8,6 +8,7 @@ class AIEnv:
 
     def __init__(self, ip, port):
         self.sock = socket(AF_INET, SOCK_STREAM)
+        self.sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.sock.bind((ip, port))
         self.sock.listen(5)
         self.wait_connection()

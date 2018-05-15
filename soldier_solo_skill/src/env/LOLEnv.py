@@ -1,5 +1,6 @@
 from src.env import AIEnv
 from src.constants.Defines import *
+import socket
 import time
 
 
@@ -32,3 +33,7 @@ class LOLEnv:
 
     def end(self):
         self.AIEnv.send(S2C_GameEnd_ID, None)
+
+    def close(self):
+        self.AIEnv.sock.shutdown(socket.SHUT_RDWR)
+        self.AIEnv.sock.close()

@@ -6,44 +6,52 @@ from ..constants.Defines import *
 class LOLAI:
     def __init__(self, camp):
         self.camp = camp
-        self.attack_range = ATTACK_RANGE_HERO[camp]
 
     def act(self, obs):
         self_hero = obs.heroes[self.camp]
         enemy_hero = obs.heroes[1 - self.camp]
         self_tower = obs.towers[self.camp]
         enemy_tower = obs.towers[1 - self.camp]
+
+        # idle if cannot move
         if not self_hero.movable:
             return Action.idle()
 
-        if self_hero.health < 300 and Observation.dis(self_tower.place, self_hero.place) > 1.5:
-            return Action.move_to(self_hero, self_tower.place)
-
         self_soldiers = obs.get_soldiers_by_camp(self.camp)
-        safe = False
+        not_safe = True
+        # make sure the hero always hide behind the all the soldiers at least 1 unit distance
         for self_soldier in self_soldiers:
             x_diff = self_soldier.place.x - self_hero.place.x
             z_diff = self_soldier.place.z - self_hero.place.z
             if self.camp == CAMP_BLUE and x_diff > 1 and z_diff > 1:
-                safe = True
+                not_safe = False
             elif self.camp == CAMP_RED and x_diff < -1 and z_diff < -1:
-                safe = True
+                not_safe = False
+            # always hide unless the hero has been very close to tower
+            elif Observation.in_circle(self_hero.place, ATTACK_RANGE_TOWER - ATTACK_RANGE_HERO[1-self.camp],
+                                       self_tower.place):
+                not_safe = False
 
-        if not safe:
+        # not safe if can be attacked by enemy tower also
+        if Observation.in_circle(self_hero.place, ATTACK_RANGE_TOWER, enemy_tower.place):
+            not_safe = True
+
+        if not_safe:
             return Action.move_to(self_hero, self_tower.place)
 
         hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
-        if hero_dist < self.attack_range and random.uniform(0, 1) < 0.8:
+        if hero_dist < SKILL_RANGE_HERO[self.camp] and Action.skill_ready(self_hero, "W"):
+            # use skill when available
+            return Action.skill(self_hero, enemy_hero, 'W')
+        elif hero_dist < ATTACK_RANGE_HERO[self.camp]:
+            # otherwise attack
             return Action.attack(self_hero, enemy_hero)
 
-        tower_dist = Observation.dis(self_hero.place, enemy_tower.place)
-        if tower_dist < self.attack_range:
-            return Action.attack(self_hero, enemy_tower)
-
-        sorted_soldiers = obs.get_soldiers(self_hero.place)
+        sorted_soldiers = obs.get_soldiers_by_dis(self_hero.place)
+        # attack only the nearest soldier within attack range, and never waste skill on soldiers
         if len(sorted_soldiers[1 - self.camp]) > 0:
             nearest_soldier_dist = Observation.dis(self_hero.place, sorted_soldiers[1 - self.camp][0].place)
-            if nearest_soldier_dist < self.attack_range:
+            if nearest_soldier_dist < ATTACK_RANGE_HERO[self.camp]:
                 return Action.attack(self_hero, sorted_soldiers[1 - self.camp][0])
 
         return Action.move_to(self_hero, enemy_tower.place)

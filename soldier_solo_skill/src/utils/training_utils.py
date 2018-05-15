@@ -6,6 +6,32 @@ import copy
 from ..constants.config import *
 
 
+class FrameMonitor:
+    """ Monitor frames per second for each player that averaged over a whole episode. """
+    def __init__(self):
+        self.times = 0
+        self.init_frames = 0
+        self.recent_frames = 0
+
+    def few_frames(self, frames):
+        """
+        Record frames per second for each player in the newly end episode,
+        and judge whether frames decrease a lot from the beginning.
+        """
+        # record from the most recent 10 episodes
+        avg_over = 10
+        if self.times < avg_over:
+            self.times += 1
+            self.init_frames += frames / avg_over
+            self.recent_frames += frames / avg_over
+        else:
+            # update according to "(1-a)*old+a*new", here a=0.2
+            self.recent_frames = self.recent_frames * 0.8 + frames * 0.2
+
+        # threshold: 0.8
+        return True if self.recent_frames < self.init_frames * 0.8 else False
+
+
 class SARS:
     """ Reward shaping, trajectory saving... All the trivial matters are done within this class. """
     def __init__(self, history, data_queue, camp):
@@ -90,7 +116,7 @@ class ScorePlotter:
         plt.ion()
         self.fig = plt.figure()
         self.x_upperlim = 20
-        self.ax = plt.axes(xlim=(0, self.x_upperlim), ylim=(-15, 15))
+        self.ax = plt.axes(xlim=(0, self.x_upperlim), ylim=(-20, 15))
         self.ax.grid()
         self.line, = self.ax.plot([], [], lw=2)
         plt.pause(0.02)
@@ -126,9 +152,7 @@ def synchronize_version(local_ai, global_ai):
 
 
 def fetch_data(ai, data_queue):
-    """Every 200 frames train one time."""
-    if not data_queue.empty():
-        # for i in range(200):
-        while not data_queue.empty():
-            exp = data_queue.get()
-            ai.store(exp)
+    """Every 100 frames train one time."""
+    for i in range(100):
+        exp = data_queue.get()
+        ai.store(exp)
