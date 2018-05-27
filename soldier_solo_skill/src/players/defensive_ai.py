@@ -41,7 +41,7 @@ class LOLAI:
 
         hero_dist = Observation.dis(self_hero.place, enemy_hero.place)
         # with some probability attack enemy hero, since tower and soldier should also be attacked
-        if random.uniform(0, 1) < 0.6:
+        if random.uniform(0, 1) < 1.0:
             if hero_dist < SKILL_RANGE_HERO[self.camp] and Action.skill_ready(self_hero, "W"):
                 # use skill when available
                 return Action.skill(self_hero, enemy_hero, 'W')

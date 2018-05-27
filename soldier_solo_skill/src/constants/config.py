@@ -22,7 +22,7 @@ QUANTITY_ACTIONS = 16
 
 SKIP_FRAME = 2
 N_GAMES = 20
-IP = '172.16.8.111'
+IP = '59.78.31.93'
 PORT = [12345 + i for i in range(N_GAMES)]
 
 
@@ -46,4 +46,4 @@ SAVE_PATH = 'saved_models/' + time.ctime() + '/'
 RESTORE = True
 RESET_EPSILON = False
 ONLY_PLAY = True
-RESTORE_PATH = 'saved_models/Sun May 13 20:00:35 2018/10001.ckpt'
+RESTORE_PATH = 'saved_models/Sat May 19 12:03:09 2018/6001.ckpt'
